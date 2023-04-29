@@ -209,10 +209,14 @@ event_plot, default_look graph_opt(xtitle("Periods since the event") ytitle("Ave
 The standard errors are small in imputation estimator, 
 because it uses pre-treatment averages as a base-period outcome,rather than period g-1 as in C&S.This has efficiency gain because it averages over more periods.
 
-(Note: BJS & CD don't want too many pre-periods) */
+(Note: BJS & CD don't want too many pre-periods) 
 
+                                            
+					                                        HOW IS THE JOSH ? :)
+								  PLEASE COMMENT "HIGH" OR "LOW" IN THE FEDBACK
+								  
+								     THANK YOU VERY MUCH FOR FOR INVITING ME.....!
 
-
-
+*/
 
 
