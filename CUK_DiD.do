@@ -2,20 +2,22 @@
 
 
 
-/*                                              DISCLAIMER
+/*                                                             DISCLAIMER
 ****************************************************************************************************************************************************************
     
-	This DO-file is created by Rizwan (Delhi School of Economics) for a practice session at  
+	This DO-file is created by Ridwan Ah Sheikh (Delhi School of Economics) for a practice session at  
                       Dept. of Economics - Central University, Kashmir
                            (All the errors and omissions are mine.)
-
+			   
+Date: 04/05/2023
+Author: Ridwan Ah Sheikh, ridwan@econdse.org
 			
 
 			
 			
-We Randomly generate treatment rollout years uniformly using simulations in STATA */
+We Randomly generate treatment rollout years uniformly using simulations in STATA.
 
-*     Generate a complete panel of 300 units observed in 15 periods
+Generate a complete panel of 300 units observed in 15 periods */
 
 clear all
 timer clear
@@ -117,7 +119,24 @@ rename F_1 ref                    // one year before the treatment (reference ye
 
 save CUK_DiD, replace
 
-
+                 /*           INSTALL THE NECESSARY PACKAGES           
+                 You'll need the following commands (packages) to be installed in STATA:
+		 
+		- did_imputation (Borusyak et al. 2023): available on SSC
+		- did_multiplegt (de Chaisemartin and D'Haultfoeuille 2020): available on SSC
+	        - csdid and drdid (Callaway and Sant'Anna 2021): available on SSC 
+		- bacondecomp  (Andrew Goodman-Bacon 2021): available on SSC
+		- ddtiming (Thomas Goldring)                               */
+		
+ssc install did_imputation, replace
+ssc install did_multiplegt, replace
+ssc install csdid, replace
+ssc install drdid, replace
+ssc install reghdfe, replace
+ssc install event_plot, replace
+ssc install bacondecomp, replace
+net install ddtiming, from(https://tgoldring.com/code)
+ssc install ftools, replace
 
 ********************************************************************************
 *                  Dynamic TWFE OLS estimator
@@ -141,14 +160,19 @@ event_plot, default_look stub_lag(L_#) stub_lead(F_#) together graph_opt(xtitle(
 
 ********************************************************************************
 * Goodman-Bacon decomposition to identify the biases in TWFE model
+
 ********************************************************************************
 
 /* we have 6 timing goups, therefore there are (6^2-6 =30) different 2x2 DiD coefficients
-                  Late vs Early - (Forbidden) and Early vs Late (Legtimate)   */
+                  Late vs Early - (Forbidden) and Early vs Late (Legtimate)  */
+		  
 use CUK_DiD, clear
 bacondecomp Y D, ddetail 
 
-/* To see the graph more clearly we can do the same decomposition using "ddtiming"
+/*  (OOPS ! Note: Panel must be strongly balanced, it does not work with unbalanced data) 
+
+
+To see the graph more clearly we can do the same decomposition using "ddtiming"
 The advantage of [ddtiming] over [bacondecomp] is that it shows the legends more clearly,
 we can use Graph editor and denote "Late vs Early" comparisons by hollow circles
                        Graph editor -> Symbol -> Hollow Circle */
@@ -174,7 +198,7 @@ event_plot csevent, default_look graph_opt(xtitle("Periods since the event") yti
 /* Tm#: pre-treatment leads
    Tp#: post-treatment lags	
    By dropping "notyet" in the option, it uses never-treated and not-yet treated as as comparison by default
-   By writing never it only uses never-treated as comparison. 
+   By writing "never" it only uses never-treated as comparison. 
    (However, if never-treated group is small, it may have inference problems. The standard errors may be large)*/
 
 
@@ -212,11 +236,8 @@ because it uses pre-treatment averages as a base-period outcome,rather than peri
 (Note: BJS & CD don't want too many pre-periods) 
 
                                             
-					                                        HOW IS THE JOSH ? :)
-								  PLEASE COMMENT "HIGH" OR "LOW" IN THE FEEDBACK
-								                      HAHAHA
-										      
-								  
+					                                        
+										      								  
 								     THANK YOU VERY MUCH FOR FOR INVITING ME.....!
 
 */
